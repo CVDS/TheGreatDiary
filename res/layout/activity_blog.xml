@@ -15,7 +15,7 @@
             android:layout_height="wrap_content" >
 
             <Button
-                android:id="@+id/newEntreeButton"
+                android:id="@+id/new_entree_button"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_gravity="top"
@@ -25,7 +25,7 @@
                 android:textSize="@dimen/normal_text" />
 
             <Button
-                android:id="@+id/blogButton"
+                android:id="@+id/menu_button"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="80dp"
@@ -40,29 +40,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <LinearLayout
+            <TableRow
+                android:id="@+id/tableRow1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:layout_height="wrap_content" >
+            </TableRow>
 
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/datum" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/notes" />
-
-                <Button
-                    android:id="@+id/openNote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                
-            </LinearLayout>
         </ScrollView>
 
     </LinearLayout>

@@ -13,7 +13,21 @@
     <string name="new_entree">New Entree</string>
     <string name="menu">Menu</string>
     <string name="title">Title</string>
-    <string name="datum">02/11/2013</string>
-    <string name="uur">18:44</string>
+    <string name="help_title">Write here down your title...</string>
+    <string name="date">02/11/2013</string>
+    <string name="time">18:44</string>
+    <string name="back">Back</string>
+    <string name="forward">Forward</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="help_event">Write here your events down &#8230;</string>
+    <string name="picture">Take picture</string>
+    <string name="camera">Camera button</string>
+    <string name="album">Photo Album</string>
+    <string name="info_text">Picture take on:</string>
+    <string name="new_note">New Note</string>
+    <string name="help_note">Write here your note down &#8230;</string>
+    <string name="title_activity_blog">BlogActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
