@@ -2,15 +2,28 @@ package mobile.cedricTom.thegreatdiary;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 
+/*
+ * Scherm met de blog
+ * TODO manier om alle elementen te tonen (getAllEntrees)
+ * TODO mogelijkheid om elementen te verwijderen (deleteEntree)
+ */
 public class BlogActivity extends Activity {
-
+	private static final int REQUEST_CODE = 1;
+	public Button newEntreeButton;
+	public Button menuButton;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTitle("Diary");
 		setContentView(R.layout.activity_blog);
-		
+		newEntreeButton = (Button)findViewById(R.id.new_entree_button);
+		menuButton = (Button) findViewById(R.id.menu_button);
 		
 	}
 
@@ -20,5 +33,20 @@ public class BlogActivity extends Activity {
 		getMenuInflater().inflate(R.menu.blog, menu);
 		return true;
 	}
+	
+	public void onClick(View view) {
+		if (view.equals(newEntreeButton)) {
+			Intent intent = new Intent(this, NewBlogActivity.class);
+			startActivityForResult(intent, REQUEST_CODE);
+		} else if (view.equals(menuButton)) {
+			Intent intent = new Intent(this, MenuActivity.class);
+			startActivityForResult(intent, REQUEST_CODE);
+		}
+	}
 
+	public void finish() {
+		Intent intent = new Intent();
+		setResult(RESULT_OK, intent);
+		super.finish();
+	}
 }

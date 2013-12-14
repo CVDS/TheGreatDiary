@@ -74,7 +74,8 @@
             android:textColor="@color/white"
             android:textSize="@dimen/normal_text"
             android:layout_alignParentRight="true" 
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:onClick="onClick"/>
 
     </RelativeLayout>
 

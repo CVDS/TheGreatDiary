@@ -45,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:contentDescription="@string/back"
-                android:src="@drawable/previous_button" />
+                android:src="@drawable/previous_button"
+                android:onClick="onClick"  />
 
             <ImageButton
                 android:id="@+id/next_button"
@@ -53,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:contentDescription="@string/forward"
-                android:src="@drawable/next_button" />
+                android:src="@drawable/next_button" 
+                android:onClick="onClick" />
         </LinearLayout>
 
         <Button
@@ -63,7 +65,8 @@
             android:background="@drawable/menubutton"
             android:text="@string/back"
             android:textColor="@color/white"
-            android:textSize="@dimen/normal_text" />
+            android:textSize="@dimen/normal_text"
+            android:onClick="onClick"  />
     </LinearLayout>
 
 </LinearLayout>

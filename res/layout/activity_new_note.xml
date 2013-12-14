@@ -56,7 +56,8 @@
                 android:background="@drawable/menubutton_white"
                 android:text="@string/cancel"
                 android:textColor="@color/dark_gray"
-                android:textSize="@dimen/normal_text" />
+                android:textSize="@dimen/normal_text"
+                android:onClick="onClick" />
 
             <Button
                 android:id="@+id/newEntreeButton"
@@ -66,7 +67,8 @@
                 android:background="@drawable/menubutton"
                 android:text="@string/save"
                 android:textColor="@color/white"
-                android:textSize="@dimen/normal_text" />
+                android:textSize="@dimen/normal_text" 
+                android:onClick="onClick"/>
         </LinearLayout>
 
 </LinearLayout>

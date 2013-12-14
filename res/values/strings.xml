@@ -29,5 +29,11 @@
     <string name="help_note">Write here your note down &#8230;</string>
     <string name="title_activity_blog">BlogActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_new_blog">New Blog</string>
+    <string name="title_activity_blog_detail">Detail Entree</string>
+    <string name="title_activity_photo_overview">Photo Overview</string>
+    <string name="title_activity_photo_detail">Detail Photo</string>
+    <string name="title_activity_new_note">New Note</string>
+    <string name="title_activity_note">Notes</string>
 
 </resources>

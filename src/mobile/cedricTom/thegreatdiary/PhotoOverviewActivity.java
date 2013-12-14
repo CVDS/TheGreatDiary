@@ -1,41 +1,35 @@
 package mobile.cedricTom.thegreatdiary;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-/*
- * Login scherm
- * TODO password check
- */
-public class MainActivity extends Activity {
-	private static final int REQUEST_CODE = 1;
-	public Button loginButton;
-	public EditText passwordField;
 
+/*
+ * Foto overview scherm
+ * TODO toon alle fotos (getAllPhotos)
+ */
+public class PhotoOverviewActivity extends Activity {
+	private static final int REQUEST_CODE = 1;
+	private Button menuButton;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		loginButton = (Button) findViewById(R.id.login_button);
-		passwordField = (EditText) findViewById(R.id.password_field);
+		setContentView(R.layout.activity_photo_overview);
+		menuButton = (Button) findViewById(R.id.menu_button);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.photo_overview, menu);
 		return true;
 	}
-
 	public void onClick(View view) {
-		Log.v("MyButton", "Clicked!");
-		// Check password first
-		if (view.equals(loginButton)) {
+		if (view.equals(menuButton)) {
 			Intent intent = new Intent(this, MenuActivity.class);
 			startActivityForResult(intent, REQUEST_CODE);
 		}
