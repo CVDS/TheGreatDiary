@@ -25,7 +25,7 @@ public class MenuActivity extends Activity {
 		setContentView(R.layout.activity_menu);
 		blogButton = (Button) findViewById(R.id.blog_button);
 		noteButton = (Button) findViewById(R.id.notes_button);
-		photoButton = (Button) findViewById(R.id.photo_button);
+		photoButton = (Button) findViewById(R.id.pictures_button);
 		logoutButton = (Button) findViewById(R.id.logout_button);
 	}
 

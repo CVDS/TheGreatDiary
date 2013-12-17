@@ -18,8 +18,8 @@
                 android:text="@string/new_note"
                 android:textColor="@color/white"
                 android:textSize="@dimen/normal_text" 
-                android:layout_alignParentLeft="true"/>
-
+                android:layout_alignParentLeft="true"
+                android:onClick="onClick"/>
             <Button
                 android:id="@+id/menu_button"
                 android:layout_width="100dp"
@@ -28,7 +28,8 @@
                 android:text="@string/menu"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/normal_text" 
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:onClick="onClick"/>
 
 
 

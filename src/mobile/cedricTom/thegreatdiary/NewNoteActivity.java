@@ -20,8 +20,8 @@ public class NewNoteActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_note);
-		cancelButton = (Button) findViewById(R.id.cancel_button);
-		saveButton = (Button) findViewById(R.id.save_button);
+		cancelButton = (Button) findViewById(R.id.cancel_button2);
+		saveButton = (Button) findViewById(R.id.save_button2);
 	}
 
 	@Override

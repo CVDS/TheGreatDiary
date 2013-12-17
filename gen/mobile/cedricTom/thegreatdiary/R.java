@@ -52,8 +52,8 @@ public final class R {
         public static final int backButton=0x7f090021;
         public static final int back_button=0x7f090008;
         public static final int blog_button=0x7f09000d;
-        public static final int cancelButton=0x7f09001b;
         public static final int cancel_button=0x7f090016;
+        public static final int cancel_button2=0x7f09001b;
         public static final int content_field=0x7f09001a;
         public static final int content_text=0x7f090013;
         public static final int date_text=0x7f090005;
@@ -61,7 +61,6 @@ public final class R {
         public static final int login_button=0x7f09000c;
         public static final int logout_button=0x7f090010;
         public static final int menu_button=0x7f090001;
-        public static final int newEntreeButton=0x7f09001c;
         public static final int new_entree_button=0x7f090000;
         public static final int new_note_button=0x7f09001d;
         public static final int new_note_title=0x7f090018;
@@ -77,6 +76,7 @@ public final class R {
         public static final int pictures_button=0x7f09000f;
         public static final int previous_button=0x7f090006;
         public static final int save_button=0x7f090017;
+        public static final int save_button2=0x7f09001c;
         public static final int scrollView1=0x7f090002;
         public static final int tableRow1=0x7f090003;
         public static final int time_text=0x7f090012;
