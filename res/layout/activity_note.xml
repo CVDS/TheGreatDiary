@@ -1,42 +1,51 @@
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".TestActivity" >
+
+    <Button
+        android:id="@+id/new_note_button"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/menubutton"
+        android:onClick="onClick"
+        android:text="@string/new_note"
+        android:textColor="@color/white"
+        android:textSize="@dimen/normal_text" />
+
+    <Button
+        android:id="@+id/menu_button"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/menubutton_white"
+        android:onClick="onClick"
+        android:text="@string/menu"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/normal_text" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".TestActivity" >
-
-            <Button
-                android:id="@+id/new_note_button"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:background="@drawable/menubutton"
-                android:text="@string/new_note"
-                android:textColor="@color/white"
-                android:textSize="@dimen/normal_text" 
-                android:layout_alignParentLeft="true"
-                android:onClick="onClick"/>
-            <Button
-                android:id="@+id/menu_button"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:background="@drawable/menubutton_white"
-                android:text="@string/menu"
-                android:textColor="@color/dark_gray"
-                android:textSize="@dimen/normal_text" 
-                android:layout_alignParentRight="true"
-                android:onClick="onClick"/>
-
-
+        android:layout_marginTop="60dp" >
 
         <LinearLayout
+            android:id="@+id/entrees_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
             android:orientation="vertical" >
         </LinearLayout>
-    </RelativeLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>

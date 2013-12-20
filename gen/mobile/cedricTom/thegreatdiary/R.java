@@ -26,6 +26,7 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f050000;
         public static final int activity_vertical_margin=0x7f050001;
+        public static final int close_button=0x7f050009;
         public static final int huge_title=0x7f050008;
         public static final int large_title=0x7f050002;
         public static final int margin_large_title_bottom=0x7f050005;
@@ -36,20 +37,21 @@ public final class R {
     }
     public static final class drawable {
         public static final int background_gray=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int loginbutton=0x7f020002;
-        public static final int logoutbutton=0x7f020003;
-        public static final int menubutton=0x7f020004;
-        public static final int menubutton_white=0x7f020005;
-        public static final int myinputfield=0x7f020006;
-        public static final int next_button=0x7f020007;
-        public static final int next_button_dark=0x7f020008;
-        public static final int previous_button=0x7f020009;
-        public static final int previous_button_dark=0x7f02000a;
+        public static final int cross=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int loginbutton=0x7f020003;
+        public static final int logoutbutton=0x7f020004;
+        public static final int menubutton=0x7f020005;
+        public static final int menubutton_white=0x7f020006;
+        public static final int myinputfield=0x7f020007;
+        public static final int next_button=0x7f020008;
+        public static final int next_button_dark=0x7f020009;
+        public static final int previous_button=0x7f02000a;
+        public static final int previous_button_dark=0x7f02000b;
     }
     public static final class id {
-        public static final int action_settings=0x7f090023;
-        public static final int backButton=0x7f090021;
+        public static final int action_settings=0x7f090024;
+        public static final int backButton=0x7f090022;
         public static final int back_button=0x7f090008;
         public static final int blog_button=0x7f09000d;
         public static final int cancel_button=0x7f090016;
@@ -57,7 +59,8 @@ public final class R {
         public static final int content_field=0x7f09001a;
         public static final int content_text=0x7f090013;
         public static final int date_text=0x7f090005;
-        public static final int info_text=0x7f090020;
+        public static final int entrees_layout=0x7f09001e;
+        public static final int info_text=0x7f090021;
         public static final int login_button=0x7f09000c;
         public static final int logout_button=0x7f090010;
         public static final int menu_button=0x7f090001;
@@ -69,10 +72,10 @@ public final class R {
         public static final int password_field=0x7f09000b;
         public static final int password_text=0x7f09000a;
         public static final int photo_button=0x7f090014;
-        public static final int photo_layout=0x7f09001f;
+        public static final int photo_layout=0x7f090020;
         public static final int photo_text=0x7f090015;
-        public static final int photo_title=0x7f09001e;
-        public static final int photos_title=0x7f090022;
+        public static final int photo_title=0x7f09001f;
+        public static final int photos_title=0x7f090023;
         public static final int pictures_button=0x7f09000f;
         public static final int previous_button=0x7f090006;
         public static final int save_button=0x7f090017;
