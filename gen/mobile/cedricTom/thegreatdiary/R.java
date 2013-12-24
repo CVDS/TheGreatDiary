@@ -50,7 +50,7 @@ public final class R {
         public static final int previous_button_dark=0x7f02000b;
     }
     public static final class id {
-        public static final int action_settings=0x7f090024;
+        public static final int action_settings=0x7f090025;
         public static final int backButton=0x7f090022;
         public static final int back_button=0x7f090008;
         public static final int blog_button=0x7f09000d;
@@ -59,7 +59,7 @@ public final class R {
         public static final int content_field=0x7f09001a;
         public static final int content_text=0x7f090013;
         public static final int date_text=0x7f090005;
-        public static final int entrees_layout=0x7f09001e;
+        public static final int entrees_layout=0x7f090003;
         public static final int info_text=0x7f090021;
         public static final int login_button=0x7f09000c;
         public static final int logout_button=0x7f090010;
@@ -69,6 +69,7 @@ public final class R {
         public static final int new_note_title=0x7f090018;
         public static final int next_button=0x7f090007;
         public static final int notes_button=0x7f09000e;
+        public static final int notes_layout=0x7f09001e;
         public static final int password_field=0x7f09000b;
         public static final int password_text=0x7f09000a;
         public static final int photo_button=0x7f090014;
@@ -81,7 +82,7 @@ public final class R {
         public static final int save_button=0x7f090017;
         public static final int save_button2=0x7f09001c;
         public static final int scrollView1=0x7f090002;
-        public static final int tableRow1=0x7f090003;
+        public static final int textView1=0x7f090024;
         public static final int time_text=0x7f090012;
         public static final int title=0x7f090009;
         public static final int title_blog=0x7f090004;
@@ -98,6 +99,7 @@ public final class R {
         public static final int activity_note=0x7f030006;
         public static final int activity_photo_detail=0x7f030007;
         public static final int activity_photo_overview=0x7f030008;
+        public static final int note=0x7f030009;
     }
     public static final class menu {
         public static final int blog=0x7f080000;

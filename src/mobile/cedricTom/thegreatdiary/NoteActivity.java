@@ -31,7 +31,7 @@ public class NoteActivity extends Activity implements OnClickListener{
 	private static final int REQUEST_CODE = 1;
 	public Button newNoteButton;
 	public Button menuButton;
-	public LinearLayout entreeLayout;
+	public LinearLayout notesLayout;
 	private List<RelativeLayout> containers;
 	
 	@Override
@@ -40,27 +40,25 @@ public class NoteActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.activity_note);
 		newNoteButton = (Button) findViewById(R.id.new_note_button);
 		menuButton = (Button) findViewById(R.id.menu_button);
-		entreeLayout = (LinearLayout) findViewById(R.id.entrees_layout);
+		notesLayout = (LinearLayout) findViewById(R.id.notes_layout);
 		containers = new ArrayList<RelativeLayout>();
 		createNote("Mijn note", "Vandaag naar de dokter om 5 uur.");
 		createNote("Andere note", "Verjaardagsfeeste van mijn bff.");
 	}
 
 	public void createNote(String titleS, String contentS){
-		//params vervangen door 
-		//XmlPullParser parser = getResources().getXml(myResouce);
+		//params vervangen door attributeset??
+		//XmlPullParser parser = getResources().getXml();
 		//AttributeSet attributes = Xml.asAttributeSet(parser);
 		//TODO getAllNotes()
-		//Maakt een nieuw note veld aan
-		//Generate ID voor container
-		//Voeg container toe aan list
 		RelativeLayout container = new RelativeLayout(getApplicationContext());
 		container.setId(generateViewId());
 		containers.add(container);
 		TextView title = new TextView(getApplicationContext());
 		title.setText(titleS);
 		title.setTextColor(Color.GRAY);
-		title.setTextSize(36);
+		title.setTextSize(18);
+		
 		RelativeLayout.LayoutParams paramsTitle = new RelativeLayout.LayoutParams(200,32);
 		
 		TextView content = new TextView(getApplicationContext());
@@ -85,7 +83,7 @@ public class NoteActivity extends Activity implements OnClickListener{
 		container.addView(title);
 		container.addView(content);
 		container.addView(button);
-		entreeLayout.addView(container);
+		notesLayout.addView(container);
 	}
 	
 	private int convertToDp(int amount){
