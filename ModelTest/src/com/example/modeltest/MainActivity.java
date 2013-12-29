@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 		password.setText(user.getPassword());
 		
 		try {
-			//Photo
+			/*//Photo
 			int pid = ds.addPhoto("Tom", "C:/test2.jpg");
 			Photo photo = ds.getPhoto(pid);
 			Log.v("MainActivity", photo.toString());
@@ -65,8 +65,11 @@ public class MainActivity extends Activity {
 			for(Photo p : ds.getAllPhotos()) {
 				Log.v("MainActivity", "Foreach failed delete: " + p.toString());	
 			}
-			
+			*/
 			//Note Checks
+			for(Note n : ds.getAllNotes()) {
+				ds.removeNote(n);	
+			}
 			int nid = ds.addNote("Dikkie jatten", "De avonturen van dikkie dik.");
 			Note note = ds.getNote(nid);
 			Log.v("MainActivity", note.toString());
