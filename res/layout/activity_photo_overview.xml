@@ -21,11 +21,11 @@
         android:textStyle="bold" />
 
     <LinearLayout
+        android:id="@+id/photo_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
         android:orientation="vertical" >
-
 
         <Button 
             android:id="@+id/menu_button"

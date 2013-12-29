@@ -15,7 +15,7 @@ import android.widget.ImageButton;
  * TODO checken of dit mogelijk is
  * TODO toon foto
  */
-public class BlogDetail extends Activity {
+public class BlogDetailActivity extends Activity {
 	private static final int REQUEST_CODE = 1;
 	public ImageButton nextButton;
 	public ImageButton previousButton;

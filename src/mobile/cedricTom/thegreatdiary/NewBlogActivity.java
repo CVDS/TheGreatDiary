@@ -1,6 +1,13 @@
 package mobile.cedricTom.thegreatdiary;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import cedric.tom.controller.DiaryService;
+import cedric.tom.exception.DiaryException;
+import cedric.tom.model.Entry;
 
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,8 +20,10 @@ import android.graphics.Bitmap;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /*
  * Nieuw entree scherm
@@ -25,10 +34,13 @@ public class NewBlogActivity extends Activity {
 	private static final int REQUEST_CODE = 1;
 	private static final int TAKE_PICTURE_REQUEST = 2;
 	public ImageButton cameraButton;
-	public Button saveButton;
-	public Button cancelButton;
+	public Button saveButton, cancelButton;
+	public EditText title, content;
+	public TextView timeText, dateText;
 	private Bitmap mImageBitmap;
 	private ImageView mImageView;
+	private DiaryService service;
+	private Date currentDate;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +50,18 @@ public class NewBlogActivity extends Activity {
 		cameraButton = (ImageButton)findViewById(R.id.photo_button);
 		saveButton = (Button) findViewById(R.id.save_button);
 		cancelButton = (Button) findViewById(R.id.cancel_button);
+		title = (EditText) findViewById(R.id.title_entree);
+		content = (EditText) findViewById(R.id.content_text);
+		timeText = (TextView) findViewById(R.id.time_text);
+		dateText = (TextView) findViewById(R.id.date_text);
+		
+		service = new DiaryService(getApplicationContext());
+		currentDate = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+		timeText.setText(format.format(currentDate));
+		format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+		dateText.setText(format.format(currentDate));
+		
 	}
 
 	@Override
@@ -56,6 +80,12 @@ public class NewBlogActivity extends Activity {
 
 		} else if (view.equals(saveButton)) {
 			Intent intent = new Intent(this, BlogActivity.class);
+			try {
+				service.addEntry(content.getText().toString());
+			} catch (DiaryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			startActivityForResult(intent, REQUEST_CODE);
 		}else if (view.equals(cancelButton)) {
 			Intent intent = new Intent(this, BlogActivity.class);

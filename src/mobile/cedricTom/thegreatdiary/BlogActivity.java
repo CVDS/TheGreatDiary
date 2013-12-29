@@ -1,14 +1,24 @@
 package mobile.cedricTom.thegreatdiary;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import cedric.tom.controller.DiaryService;
+import cedric.tom.exception.DiaryException;
+import cedric.tom.model.Entry;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
@@ -29,7 +39,9 @@ public class BlogActivity extends Activity implements OnClickListener{
 	public Button newEntreeButton;
 	public Button menuButton;
 	public LinearLayout entreeLayout;
-	private List<RelativeLayout> containers;
+	private Map<Integer, RelativeLayout> containers;
+	private DiaryService service;
+	private List<Entry> entries;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +51,18 @@ public class BlogActivity extends Activity implements OnClickListener{
 		newEntreeButton = (Button)findViewById(R.id.new_entree_button);
 		menuButton = (Button) findViewById(R.id.menu_button);
 		entreeLayout = (LinearLayout) findViewById(R.id.entrees_layout);
-		containers = new ArrayList<RelativeLayout>();
-		createEntree("11/12/13", "My entry of the day");
+		containers = new HashMap<Integer, RelativeLayout>();
+		
+		service = new DiaryService(getApplicationContext());
+		
+		entries = service.getAllEntries();
+		for(Entry entry:entries){
+			createEntree(entry.getId(), entry.getDate(), entry.getContent());
+			Log.v("BlogActivity", "Entry:" + entry.getId());
+		}		
 	}
-	public void createEntree(String datum, String contentS){
+	
+	public void createEntree(int id, Date datum, String contentS){
 		//Add photo?
 		//params vervangen door attributeset??
 		//XmlPullParser parser = getResources().getXml();
@@ -50,9 +70,10 @@ public class BlogActivity extends Activity implements OnClickListener{
 		//TODO getAllEntrees()
 		RelativeLayout container = new RelativeLayout(getApplicationContext());
 		container.setId(generateViewId());
-		containers.add(container);
+		containers.put(id, container);
 		TextView title = new TextView(getApplicationContext());
-		title.setText(datum);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.ENGLISH);
+		title.setText(format.format(datum));
 		title.setTextColor(Color.GRAY);
 		
 		RelativeLayout.LayoutParams paramsTitle = new RelativeLayout.LayoutParams(200,32);
@@ -63,14 +84,19 @@ public class BlogActivity extends Activity implements OnClickListener{
 		//android:layout_below="@+id/textView2"
         //android:layout_marginTop="24dp"
 		RelativeLayout.LayoutParams paramsContent = new RelativeLayout.LayoutParams(200,32);
-		paramsContent.addRule(RelativeLayout.BELOW, R.id.title_note);
+		paramsContent.addRule(RelativeLayout.BELOW, R.id.title_entree);
 		paramsContent.setMargins(0, convertToDp(60), 0, 0);
 		
 		ImageButton button = new ImageButton(getApplicationContext());
+		//set background image
 		button.setBackgroundResource(R.drawable.cross);
-		RelativeLayout.LayoutParams paramsButton = new RelativeLayout.LayoutParams(16, 16);
+		//set size button
+		RelativeLayout.LayoutParams paramsButton = new RelativeLayout.LayoutParams(20, 20);
+		//set alignement
 		paramsButton.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		//set margin
 		paramsButton.setMargins(0, convertToDp(8), convertToDp(8), 0);
+		//add listener
 		button.setOnClickListener(this);
 		
 		title.setLayoutParams(paramsTitle);
@@ -116,12 +142,18 @@ public class BlogActivity extends Activity implements OnClickListener{
 			Intent intent = new Intent(this, MenuActivity.class);
 			startActivityForResult(intent, REQUEST_CODE);
 		}
-		for(RelativeLayout container:containers){
+		for(Integer id:containers.keySet()){
 			//getChildAt(2) vervangen door id?
+			//TODO add confirmation request
+			RelativeLayout container = containers.get(id);
 			ImageButton close = (ImageButton) container.getChildAt(2);
 			if(view.equals(close)){
-				//Remove container
 				((LinearLayout)container.getParent()).removeView(container);
+				Entry entry = service.getEntry(id);
+				Log.v("BlogActivity", "Entry:" + container.getId());
+				
+				service.removeEntry(entry);
+				containers.remove(container);
 			}
 		}
 	}

@@ -25,10 +25,8 @@
                     android:textSize="@dimen/large_title"
                     android:textStyle="bold" />
 
-  
-
                 <EditText
-  					android:id="@+id/title_note"
+                    android:id="@+id/title_entree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/title"
