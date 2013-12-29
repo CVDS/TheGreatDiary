@@ -21,15 +21,16 @@ import android.util.Log;
 public class DiaryDB {
 	private SQLiteDatabase database;
 	private SQLiteDB dbHelper;
-	
-	private String[] userColumns = { "Name", "Password"};
+
+	private String[] userColumns = { "Name", "Password" };
 	private String[] entryColumns = { "ID", "Date", "Content", "PhotoID" };
 	private String[] noteColumns = { "ID", "Title", "Content" };
 	private String[] photoColumns = { "ID", "Title", "Source" };
-	
+
 	public DiaryDB(Context context) {
 		dbHelper = new SQLiteDB(context);
 	}
+
 	public void open() throws SQLException {
 		database = dbHelper.getWritableDatabase();
 	}
@@ -37,20 +38,20 @@ public class DiaryDB {
 	public void close() {
 		dbHelper.close();
 	}
-	
-	//User CRUD
-	
+
+	// User CRUD
+
 	public User getUser() {
 		User user = null;
 		Cursor cursor = database.rawQuery("SELECT * FROM User", null);
-		//Cursor cursor = database.query("User",
-		//		userColumns, null, null, null, null, null);
+		// Cursor cursor = database.query("User",
+		// userColumns, null, null, null, null, null);
 
 		cursor.moveToFirst();
 		if (!cursor.isAfterLast()) {
 			try {
 				user = new User(cursor.getString(0), cursor.getString(1));
-			} catch (DiaryException e) { 
+			} catch (DiaryException e) {
 				Log.v("DiaryDB", "User:" + e.getMessage());
 			}
 			cursor.moveToNext();
@@ -58,39 +59,42 @@ public class DiaryDB {
 		cursor.close();
 		return user;
 	}
-	
+
 	public String test() {
-		String[] test = {"ID"};
-		Cursor cursor = database.query("Tom", test, null, null, null, null, null);
+		String[] test = { "ID" };
+		Cursor cursor = database.query("Tom", test, null, null, null, null,
+				null);
 		cursor.moveToFirst();
 		String data = cursor.getString(0);
 		cursor.close();
 		return data;
 	}
-	
+
 	public void addUser(User user) {
 		ContentValues values = new ContentValues();
 		values.put("Name", user.getUsername());
 		values.put("Password", user.getPassword());
-		
+
 		database.insert("User", null, values);
 	}
 
-	//Entry
-	
+	// Entry
+
 	public Entry getEntry(int id) {
 		Entry entry = null;
 
-		Cursor cursor = database.query("Entry", entryColumns, null, null, null, null, null);
+		Cursor cursor = database.query("Entry", entryColumns, null, null, null,
+				null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast() && entry == null) {
-			if (((int)cursor.getInt(0)) == id) {
+			if (((int) cursor.getInt(0)) == id) {
 				try {
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
+					SimpleDateFormat dateFormat = new SimpleDateFormat(
+							"yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 					Date date = dateFormat.parse(cursor.getString(1));
-					
-					entry = new Entry((int) cursor.getInt(0), date, cursor.getString(2));
+					entry = new Entry((int) cursor.getInt(0), date,
+							cursor.getString(2));
 				} catch (Exception e) {
 					Log.v("DB", "Entry: Date corrupt?\t" + e.getMessage());
 				}
@@ -100,20 +104,20 @@ public class DiaryDB {
 		cursor.close();
 		return entry;
 	}
-	
+
 	public List<Entry> getAllEntries() {
 		List<Entry> entries = new ArrayList<Entry>();
-		
-		Cursor cursor = database.query("Entry", entryColumns, null, null, null, null, null);
-
+		Cursor cursor = database.query("Entry", entryColumns, null, null, null,
+				null, null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			try {
-				Log.v("DB", "Note:" + cursor.getString(1));
-				//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
-				//Date date = dateFormat.parse(cursor.getString(1));
-				Date date = new Date();
-				Entry entry = new Entry((int) cursor.getInt(0), date, cursor.getString(2));
+				SimpleDateFormat dateFormat = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+				Date date = dateFormat.parse(cursor.getString(1));
+
+				Entry entry = new Entry((int) cursor.getInt(0), date,
+						cursor.getString(2));
 				entries.add(entry);
 			} catch (Exception e) {
 				Log.v("DB", "Entry: Date corrupt?\t" + e.getMessage());
@@ -121,52 +125,112 @@ public class DiaryDB {
 			cursor.moveToNext();
 		}
 		cursor.close();
-		
+
 		return entries;
 	}
-	
-	public void addEntry(Entry entry) {
-		database.insert("Entry", null, getContentValuesEntry(entry));
+
+	public Entry nextEntry(Entry entry) {
+		Entry nextEntry = null;
+		Cursor cursor = database.query("Entry", entryColumns, null, null, null,
+				null, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast() && nextEntry == null) {
+			try {
+				SimpleDateFormat dateFormat = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+				Date date = dateFormat.parse(cursor.getString(1));
+				if (!date.equals(entry.getDate())) {
+					if (entry.getDate().before(date)) {
+						nextEntry = new Entry((int) cursor.getInt(0), date,
+								cursor.getString(2));
+					}
+				}
+			} catch (Exception e) {
+				Log.v("DB", "Entry: Date corrupt?\t" + e.getMessage());
+			}
+			cursor.moveToNext();
+		}
+		cursor.close();
+		if (nextEntry != null) {
+			Log.v("DB", "Entry: current \t" + entry.getDate().toString());
+			Log.v("DB", "Entry: after \t" + nextEntry.getDate().toString());
+		}
+		return nextEntry;
 	}
-	
+
+	public Entry previousEntry(Entry entry) {
+		Entry previousEntry = null;
+		Cursor cursor = database.query("Entry", entryColumns, null, null, null,
+				null, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			try {
+				SimpleDateFormat dateFormat = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+				Date date = dateFormat.parse(cursor.getString(1));
+				if (!date.equals(entry.getDate())) {
+					if (entry.getDate().after(date)) {
+						previousEntry = new Entry((int) cursor.getInt(0), date,
+								cursor.getString(2));
+					}
+				}
+			} catch (Exception e) {
+				Log.v("DB", "Entry: Date corrupt?\t" + e.getMessage());
+			}
+			cursor.moveToNext();
+		}
+		cursor.close();
+		if (previousEntry != null) {
+			Log.v("DB", "Entry: current \t" + entry.getDate().toString());
+			Log.v("DB", "Entry: after \t" + previousEntry.getDate().toString());
+		}
+		return previousEntry;
+	}
+
+	public int addEntry(Entry entry) {
+		return (int) database.insert("Entry", null, getContentValuesEntry(entry));
+	}
+
 	public void removeEntry(Entry entry) {
 		database.delete("Entry", "ID = " + entry.getId(), null);
 	}
-	
+
 	public void updateEntry(Entry entry) {
-		database.update("Entry", getContentValuesEntry(entry), "ID = " + entry.getId(), null);
+		database.update("Entry", getContentValuesEntry(entry),
+				"ID = " + entry.getId(), null);
 	}
-	
+
 	private ContentValues getContentValuesEntry(Entry entry) {
 		ContentValues values = new ContentValues();
 
-		SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+		SimpleDateFormat simpleFormat = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 		String entreeDate = simpleFormat.format(entry.getDate());
 		values.put("Date", entreeDate);
 		values.put("Content", entry.getContent());
 		Log.v("DB", "Note:" + entreeDate);
-		//als er geen photoID is
-		if(entry.getPhotoID() != -1)
+		// als er geen photoID is
+		if (entry.getPhotoID() != -1)
 			values.put("PhotoID", entry.getPhotoID());
-		
+
 		return values;
 	}
-	
-	//Note CRUD
+
+	// Note CRUD
 	// ID, Title, Content
-	
 
 	public Note getNote(int id) {
 		Note note = null;
 
-		Cursor cursor = database.query("Note",
-				noteColumns, null, null, null, null, null);
+		Cursor cursor = database.query("Note", noteColumns, null, null, null,
+				null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast() && note == null) {
-			if (((int)cursor.getInt(0)) == id) {
+			if (((int) cursor.getInt(0)) == id) {
 				try {
-					note = new Note((int) cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+					note = new Note((int) cursor.getInt(0),
+							cursor.getString(1), cursor.getString(2));
 				} catch (DiaryException e) {
 					Log.v("DB", "Note:" + e.getMessage());
 				}
@@ -176,135 +240,125 @@ public class DiaryDB {
 		cursor.close();
 		return note;
 	}
-	
+
 	public List<Note> getAllNotes() {
 		List<Note> notes = new ArrayList<Note>();
-		
-		Cursor cursor = database.query("Note",
-				noteColumns, null, null, null, null, null);
+
+		Cursor cursor = database.query("Note", noteColumns, null, null, null,
+				null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			try {
-				notes.add(new Note((int) cursor.getInt(0), cursor.getString(1), cursor.getString(2)));
+				notes.add(new Note((int) cursor.getInt(0), cursor.getString(1),
+						cursor.getString(2)));
 			} catch (DiaryException e) {
 				Log.v("DB", "Note:" + e.getMessage());
 			}
 			cursor.moveToNext();
 		}
 		cursor.close();
-		
+
 		return notes;
 	}
-	
-	public void addNote(Note note) {
-		database.insert("Note", null, getContentValuesNote(note));
+
+	public int addNote(Note note) {
+		return (int) database.insert("Note", null, getContentValuesNote(note));
 	}
-	
+
 	public void removeNote(Note note) {
 		database.delete("Note", "ID = " + note.getId(), null);
 	}
-	
+
 	public void updateNote(Note note) {
-		database.update("Note", getContentValuesNote(note), "ID = " + note.getId(), null);
+		database.update("Note", getContentValuesNote(note),
+				"ID = " + note.getId(), null);
 	}
-	
+
 	private ContentValues getContentValuesNote(Note note) {
 		ContentValues values = new ContentValues();
-		
-		values.put("ID", note.getId());
 		values.put("Title", note.getTitle());
 		values.put("Content", note.getContent());
-		
 		return values;
 	}
-	
-	//Photo CRUD
-	
+
+	// Photo CRUD
+
 	public Photo getPhoto(int id) {
 		Photo photo = null;
 
-		Cursor cursor = database.query("Photo",
-				noteColumns, null, null, null, null, null);
+		Cursor cursor = database.query("Photo", noteColumns, null, null, null,
+				null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast() && photo == null) {
-			if (((int)cursor.getInt(0)) == id) {
-				photo = new Photo((int) cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+			if (((int) cursor.getInt(0)) == id) {
+				photo = new Photo((int) cursor.getInt(0), cursor.getString(1),
+						cursor.getString(2));
 			}
 			cursor.moveToNext();
 		}
 		cursor.close();
 		return photo;
 	}
-	
+
 	public List<Photo> getAllPhotos() {
 		List<Photo> photos = new ArrayList<Photo>();
-		
-		Cursor cursor = database.query("Photo",
-				photoColumns, null, null, null, null, null);
+
+		Cursor cursor = database.query("Photo", photoColumns, null, null, null,
+				null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
-			photos.add(new Photo((int) cursor.getInt(0), cursor.getString(1), cursor.getString(2)));
+			photos.add(new Photo((int) cursor.getInt(0), cursor.getString(1),
+					cursor.getString(2)));
 			cursor.moveToNext();
 		}
 		cursor.close();
-		
+
 		return photos;
 	}
-	
+
 	public void addPhoto(Photo photo) {
 		database.insert("Photo", null, getContentValuesPhoto(photo));
 	}
-	
+
 	public void removePhoto(Photo photo) {
 		database.delete("Photo", "ID = " + photo.getId(), null);
 	}
-	
+
 	public void updatePhoto(Photo photo) {
-		database.update("Photo", getContentValuesPhoto(photo), "ID = " + photo.getId(), null);
+		database.update("Photo", getContentValuesPhoto(photo),
+				"ID = " + photo.getId(), null);
 	}
-	
+
 	private ContentValues getContentValuesPhoto(Photo photo) {
 		ContentValues values = new ContentValues();
-		
 		values.put("ID", photo.getId());
 		values.put("Title", photo.getTitle());
 		values.put("Source", photo.getSource());
-		
 		return values;
 	}
-		
-	
-	
+
 	/*
-	public void deleteGuessWord(GuessWord guessWord) {
-		long id = guessWord.getId();
-		System.out.println("GuessWord deleted with id: " + id);
-		database.delete(MySQLiteHelper.TABLE_GUESSWORDS, MySQLiteHelper.COLUMN_ID
-				+ " = " + id, null);
-	}
-
-	public GuessWordList getAllGuessWords() {
-		GuessWordList guessWords = new GuessWordList();
-
-		Cursor cursor = database.query(MySQLiteHelper.TABLE_GUESSWORDS,
-				allColumns, null, null, null, null, null);
-
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			GuessWord guessWord = cursorToGuessWord(cursor);
-			guessWords.addGuessWord(guessWord);
-			cursor.moveToNext();
-		}
-		// make sure to close the cursor
-		cursor.close();
-		return guessWords;
-	}
-
-	private GuessWord cursorToGuessWord(Cursor cursor) {
-		GuessWord guessWord = new GuessWord((int)cursor.getLong(0),cursor.getString(1));
-		return guessWord;
-	}*/
+	 * public void deleteGuessWord(GuessWord guessWord) { long id =
+	 * guessWord.getId(); System.out.println("GuessWord deleted with id: " +
+	 * id); database.delete(MySQLiteHelper.TABLE_GUESSWORDS,
+	 * MySQLiteHelper.COLUMN_ID + " = " + id, null); }
+	 * 
+	 * public GuessWordList getAllGuessWords() { GuessWordList guessWords = new
+	 * GuessWordList();
+	 * 
+	 * Cursor cursor = database.query(MySQLiteHelper.TABLE_GUESSWORDS,
+	 * allColumns, null, null, null, null, null);
+	 * 
+	 * cursor.moveToFirst(); while (!cursor.isAfterLast()) { GuessWord guessWord
+	 * = cursorToGuessWord(cursor); guessWords.addGuessWord(guessWord);
+	 * cursor.moveToNext(); } // make sure to close the cursor cursor.close();
+	 * return guessWords; }
+	 * 
+	 * private GuessWord cursorToGuessWord(Cursor cursor) { GuessWord guessWord
+	 * = new GuessWord((int)cursor.getLong(0),cursor.getString(1)); return
+	 * guessWord; }
+	 */
 }

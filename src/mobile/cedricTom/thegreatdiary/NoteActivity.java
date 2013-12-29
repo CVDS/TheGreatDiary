@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
@@ -48,6 +49,7 @@ public class NoteActivity extends Activity implements OnClickListener{
 		service = new DiaryService(getApplicationContext());
 		List<Note> notes = service.getAllNotes();
 		for(Note note:notes){
+			Log.v("DB", "Note:" + note.getId());
 			createNote(note.getId(), note.getTitle(),note.getContent());
 		}
 	}
@@ -58,23 +60,24 @@ public class NoteActivity extends Activity implements OnClickListener{
 		//AttributeSet attributes = Xml.asAttributeSet(parser);
 		//TODO getAllNotes()
 		RelativeLayout container = new RelativeLayout(getApplicationContext());
+		RelativeLayout.LayoutParams paramsContainer = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+		paramsContainer.setMargins(0, 50, 0, 50);
 		container.setId(generateViewId());
+		container.setBackgroundResource(R.drawable.background_gray);
 		containers.put(id, container);
+		
 		TextView title = new TextView(getApplicationContext());
 		title.setText(titleS);
 		title.setTextColor(Color.GRAY);
-		title.setTextSize(18);
-		
+		title.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
 		RelativeLayout.LayoutParams paramsTitle = new RelativeLayout.LayoutParams(200,32);
 		
 		TextView content = new TextView(getApplicationContext());
 		content.setTextColor(Color.GRAY);
 		content.setText(contentS);
-		//android:layout_below="@+id/textView2"
-        //android:layout_marginTop="24dp"
 		RelativeLayout.LayoutParams paramsContent = new RelativeLayout.LayoutParams(200,32);
-		paramsContent.addRule(RelativeLayout.BELOW, R.id.title_entree);
-		paramsContent.setMargins(0, convertToDp(60), 0, 0);
+		paramsContent.addRule(RelativeLayout.BELOW, R.id.title_field);
+		paramsContent.setMargins(0, convertToDp(30), 0, 0);
 		
 		ImageButton button = new ImageButton(getApplicationContext());
 		button.setBackgroundResource(R.drawable.cross);
@@ -83,6 +86,7 @@ public class NoteActivity extends Activity implements OnClickListener{
 		paramsButton.setMargins(0, convertToDp(8), convertToDp(8), 0);
 		button.setOnClickListener(this);
 		
+		container.setLayoutParams(paramsContainer);
 		title.setLayoutParams(paramsTitle);
 		content.setLayoutParams(paramsContent);
 		button.setLayoutParams(paramsButton);

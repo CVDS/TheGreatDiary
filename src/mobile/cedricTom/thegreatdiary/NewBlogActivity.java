@@ -35,7 +35,7 @@ public class NewBlogActivity extends Activity {
 	private static final int TAKE_PICTURE_REQUEST = 2;
 	public ImageButton cameraButton;
 	public Button saveButton, cancelButton;
-	public EditText title, content;
+	public EditText content;
 	public TextView timeText, dateText;
 	private Bitmap mImageBitmap;
 	private ImageView mImageView;
@@ -50,10 +50,9 @@ public class NewBlogActivity extends Activity {
 		cameraButton = (ImageButton)findViewById(R.id.photo_button);
 		saveButton = (Button) findViewById(R.id.save_button);
 		cancelButton = (Button) findViewById(R.id.cancel_button);
-		title = (EditText) findViewById(R.id.title_entree);
 		content = (EditText) findViewById(R.id.content_text);
 		timeText = (TextView) findViewById(R.id.time_text);
-		dateText = (TextView) findViewById(R.id.date_text);
+		dateText = (TextView) findViewById(R.id.blog_date);
 		
 		service = new DiaryService(getApplicationContext());
 		currentDate = new Date();
@@ -99,7 +98,6 @@ public class NewBlogActivity extends Activity {
 		super.finish();
 	}
 
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);

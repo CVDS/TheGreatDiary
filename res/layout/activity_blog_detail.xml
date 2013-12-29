@@ -10,23 +10,26 @@
     tools:context=".TestActivity" >
 
     <TextView
-        android:id="@+id/title_blog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="@string/title"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/gray"
-        android:textSize="@dimen/large_title"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/date_text"
+        android:id="@+id/blog_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/date"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/gray" />
+
+    <TextView
+        android:id="@+id/content_blog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:text="@string/new_entree"
+        android:textColor="@color/gray" />
+
+    <ImageView
+        android:id="@+id/photoView"
+        android:layout_width="133dp"
+        android:layout_height="145dp"
+        android:contentDescription="@string/camera" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,10 +55,12 @@
                 android:id="@+id/next_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:background="@null"
                 android:contentDescription="@string/forward"
-                android:src="@drawable/next_button" 
-                android:onClick="onClick" />
+                android:onClick="onClick"
+                android:src="@drawable/next_button" />
+
         </LinearLayout>
 
         <Button
@@ -67,6 +72,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/normal_text"
             android:onClick="onClick"  />
+
     </LinearLayout>
 
 </LinearLayout>

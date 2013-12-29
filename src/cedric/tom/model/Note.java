@@ -8,6 +8,7 @@ public class Note {
 	private String content;
 	
 	public Note(int id, String title, String content) throws DiaryException {
+		setId(id);
 		setTitle(title);
 		setContent(content);
 	}
@@ -41,5 +42,9 @@ public class Note {
 			throw new DiaryException("A note must have some content, throw me a bone here.");
 		
 		this.content = content;
+	}
+	
+	public String toString() {
+		return id + ". " + title + ": " + content;
 	}
 }

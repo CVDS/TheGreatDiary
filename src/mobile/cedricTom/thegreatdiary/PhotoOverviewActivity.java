@@ -1,11 +1,14 @@
 package mobile.cedricTom.thegreatdiary;
 
+import java.io.File;
 import java.util.List;
 
 import cedric.tom.controller.DiaryService;
 import cedric.tom.model.Photo;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +16,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 /*
  * Foto overview scherm
@@ -31,12 +38,23 @@ public class PhotoOverviewActivity extends Activity {
 		menuButton = (Button) findViewById(R.id.menu_button);
 		photoLayout = (LinearLayout) findViewById(R.id.photo_layout);
 		service = new DiaryService(getApplicationContext());
+		service.addPhoto(new Photo(1,"foto","cross.png"));
+		service.addPhoto(new Photo(2,"foto2","cross.png"));
 		List<Photo> photos = service.getAllPhotos();
+
+		TableRow row = new TableRow(getApplicationContext());
 		for (Photo photo : photos) {
 			ImageView photoView = new ImageView(getApplicationContext());
 			//TODO get photo src
-			photoView.setBackgroundResource(R.drawable.cross);
-			photoLayout.addView(photoView);
+			File imgFile = new  File(photo.getSource());
+			if(imgFile.exists()){
+			    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+			    photoView.setImageBitmap(myBitmap);
+			}
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
+			//photoView.setLayoutParams(layoutParams);
+			row.addView(photoView);
+			photoLayout.addView(row);
 		}
 	}
 

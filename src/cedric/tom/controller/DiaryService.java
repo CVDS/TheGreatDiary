@@ -3,6 +3,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 
 import cedric.tom.db.DiaryDB;
 import cedric.tom.exception.DiaryException;
@@ -44,6 +45,13 @@ public class DiaryService {
 		return db.getAllEntries();
 	}
 	
+	public Entry getNextEntry(Entry entry){
+		return db.nextEntry(entry);
+	}
+	public Entry getPreviousEntry(Entry entry){
+		return db.previousEntry(entry);
+	}
+	
 	public void addEntry(String content) throws DiaryException {
 		db.addEntry(new Entry(new Date(), content));
 	}
@@ -61,8 +69,8 @@ public class DiaryService {
 	}
 	
 	//Note methods
-	public void addNote(String content, String title) throws DiaryException {
-		db.addNote(new Note(content, title));
+	public int addNote(String content, String title) throws DiaryException {
+		return db.addNote(new Note(content, title));
 	}
 	
 	public void removeNote(Note note) throws DiaryException {

@@ -25,18 +25,8 @@
                     android:textSize="@dimen/large_title"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/title_entree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/title"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/medium_title"
-                    android:textStyle="bold" />
-
                 <TextView
-                    android:id="@+id/date_text"
+                    android:id="@+id/blog_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
