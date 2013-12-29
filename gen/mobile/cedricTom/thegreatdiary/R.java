@@ -149,6 +149,7 @@ public final class R {
         public static final int title_activity_note=0x7f060021;
         public static final int title_activity_photo_detail=0x7f06001f;
         public static final int title_activity_photo_overview=0x7f06001e;
+        public static final int username=0x7f060022;
     }
     public static final class style {
         /** 

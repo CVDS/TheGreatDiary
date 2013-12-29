@@ -1,5 +1,7 @@
 package mobile.cedricTom.thegreatdiary;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +11,9 @@ import cedric.tom.controller.DiaryService;
 import cedric.tom.exception.DiaryException;
 import cedric.tom.model.Entry;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +21,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +38,7 @@ import android.widget.TextView;
 public class NewBlogActivity extends Activity {
 	private static final int REQUEST_CODE = 1;
 	private static final int TAKE_PICTURE_REQUEST = 2;
+	private static final int REQUEST_TAKE_PHOTO = 3;
 	public ImageButton cameraButton;
 	public Button saveButton, cancelButton;
 	public EditText content;
@@ -41,6 +47,7 @@ public class NewBlogActivity extends Activity {
 	private ImageView mImageView;
 	private DiaryService service;
 	private Date currentDate;
+	private String mCurrentPhotoPath;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +80,10 @@ public class NewBlogActivity extends Activity {
 	public void onClick(View view) {
 		if (view.equals(cameraButton)) {
 			//start camera app
-		//	if(isIntentAvailable(getApplicationContext(),"TAKE_PICTURE")){
+			//if(isIntentAvailable(getApplicationContext(),"TAKE_PICTURE")){
 				dispatchTakePictureIntent(TAKE_PICTURE_REQUEST);
-		//	}
+			//dispatchTakePictureIntent();
+			//}
 
 		} else if (view.equals(saveButton)) {
 			Intent intent = new Intent(this, BlogActivity.class);
@@ -90,6 +98,24 @@ public class NewBlogActivity extends Activity {
 			Intent intent = new Intent(this, BlogActivity.class);
 			startActivityForResult(intent, REQUEST_CODE);
 		}
+	}
+	private File createImageFile() throws IOException {
+	    // Create an image file name
+	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+	    String imageFileName = "JPEG_" + timeStamp + "_";
+	    File storageDir = Environment.getExternalStoragePublicDirectory(
+	            Environment.DIRECTORY_PICTURES);
+	    File image = new File(storageDir + imageFileName + ".jpg");
+	    /*.createTempFile(
+	        imageFileName, 
+	        ".jpg",         
+	        storageDir      
+	    );
+	    */
+	    // Save a file: path for use with ACTION_VIEW intents
+	    mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+
+	    return image;
 	}
 
 	public void finish() {
@@ -111,6 +137,29 @@ public class NewBlogActivity extends Activity {
 	    startActivityForResult(takePictureIntent, actionCode);
 	}
 	
+	private void dispatchTakePictureIntent() {
+	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	    // Ensure that there's a camera activity to handle the intent
+	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+	        // Create the File where the photo should go
+	        File photoFile = null;
+	        try {
+	            photoFile = createImageFile();
+	        } catch (IOException ex) {
+	            // Error occurred while creating the File
+	        	Log.v("NewBlog", "Photo:" + ex.getMessage());
+	        }
+	        // Continue only if the File was successfully created
+	        if (photoFile != null) {
+	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+	                    Uri.fromFile(photoFile));
+	            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+	        }else{
+	        	Log.v("NewBlog", "Photo:" + "photo = null"
+	        );
+	        }
+	    }
+	}
 	//function to check whether an app can handle your intent
 	public static boolean isIntentAvailable(Context context, String action) {
 	    final PackageManager packageManager = context.getPackageManager();

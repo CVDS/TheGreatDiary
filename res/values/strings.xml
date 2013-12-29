@@ -35,5 +35,5 @@
     <string name="title_activity_photo_detail">Detail Photo</string>
     <string name="title_activity_new_note">New Note</string>
     <string name="title_activity_note">Notes</string>
-
+	<string name="username">username</string>
 </resources>

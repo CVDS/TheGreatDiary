@@ -121,8 +121,8 @@ public class BlogDetailActivity extends Activity {
 		String dateText = simpleFormat.format(date);
 		titleView.setText(dateText);
 		contentView.setText(currentEntry.getContent());
-		Photo photo = service.getPhoto(currentEntry.getPhotoID());
-		Bitmap myBitmap = BitmapFactory.decodeFile(photo.getSource());
-		photoView.setImageBitmap(myBitmap);
+		//Photo photo = service.getPhoto(currentEntry.getPhotoID());
+		//Bitmap myBitmap = BitmapFactory.decodeFile(photo.getSource());
+		//photoView.setImageBitmap(myBitmap);
 	}
 }
