@@ -19,6 +19,10 @@ public class DiaryService {
 		db.open();
 	}
 	
+	public void closeDB(){
+		db.close();
+	}
+	
 	public String test() {
 		return db.test();
 	}

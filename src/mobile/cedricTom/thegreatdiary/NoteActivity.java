@@ -1,19 +1,21 @@
 package mobile.cedricTom.thegreatdiary;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.xmlpull.v1.XmlPullParser;
+import cedric.tom.controller.DiaryService;
+import cedric.tom.exception.DiaryException;
+import cedric.tom.model.Note;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.util.AttributeSet;
+import android.os.Bundle;
 import android.util.TypedValue;
-import android.util.Xml;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,14 +27,14 @@ import android.widget.TextView;
 
 /*
  * Note scherm 
- * TODO toon alle notes (getAllNotes)
  */
 public class NoteActivity extends Activity implements OnClickListener{
 	private static final int REQUEST_CODE = 1;
 	public Button newNoteButton;
 	public Button menuButton;
 	public LinearLayout notesLayout;
-	private List<RelativeLayout> containers;
+	private Map<Integer, RelativeLayout> containers;
+	private DiaryService service;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +43,23 @@ public class NoteActivity extends Activity implements OnClickListener{
 		newNoteButton = (Button) findViewById(R.id.new_note_button);
 		menuButton = (Button) findViewById(R.id.menu_button);
 		notesLayout = (LinearLayout) findViewById(R.id.notes_layout);
-		containers = new ArrayList<RelativeLayout>();
-		createNote("Mijn note", "Vandaag naar de dokter om 5 uur.");
-		createNote("Andere note", "Verjaardagsfeeste van mijn bff.");
+		containers = new HashMap<Integer, RelativeLayout>();
+		
+		service = new DiaryService(getApplicationContext());
+		List<Note> notes = service.getAllNotes();
+		for(Note note:notes){
+			createNote(note.getId(), note.getTitle(),note.getContent());
+		}
 	}
 
-	public void createNote(String titleS, String contentS){
+	public void createNote(int id, String titleS, String contentS){
 		//params vervangen door attributeset??
 		//XmlPullParser parser = getResources().getXml();
 		//AttributeSet attributes = Xml.asAttributeSet(parser);
 		//TODO getAllNotes()
 		RelativeLayout container = new RelativeLayout(getApplicationContext());
 		container.setId(generateViewId());
-		containers.add(container);
+		containers.put(id, container);
 		TextView title = new TextView(getApplicationContext());
 		title.setText(titleS);
 		title.setTextColor(Color.GRAY);
@@ -67,7 +73,7 @@ public class NoteActivity extends Activity implements OnClickListener{
 		//android:layout_below="@+id/textView2"
         //android:layout_marginTop="24dp"
 		RelativeLayout.LayoutParams paramsContent = new RelativeLayout.LayoutParams(200,32);
-		paramsContent.addRule(RelativeLayout.BELOW, R.id.title_note);
+		paramsContent.addRule(RelativeLayout.BELOW, R.id.title_entree);
 		paramsContent.setMargins(0, convertToDp(60), 0, 0);
 		
 		ImageButton button = new ImageButton(getApplicationContext());
@@ -111,13 +117,23 @@ public class NoteActivity extends Activity implements OnClickListener{
 			Intent intent = new Intent(this, MenuActivity.class);
 			startActivityForResult(intent, REQUEST_CODE);
 		}
-		for(RelativeLayout container:containers){
+		for(Integer id:containers.keySet()){
 			//getChildAt(2) vervangen door id?
+			//TODO add confirmation request
+			RelativeLayout container = containers.get(id);
 			ImageButton close = (ImageButton) container.getChildAt(2);
 			if(view.equals(close)){
 				//Remove container
 				((LinearLayout)container.getParent()).removeView(container);
-			}
+				Note note = service.getNote(id);
+				try {
+					service.removeNote(note);
+				} catch (DiaryException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				containers.remove(container);
+				}
 		}
 	}
 

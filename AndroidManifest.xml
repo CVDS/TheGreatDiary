@@ -35,7 +35,7 @@
             android:label="@string/title_activity_new_blog" >
         </activity>
         <activity
-            android:name="mobile.cedricTom.thegreatdiary.BlogDetail"
+            android:name="mobile.cedricTom.thegreatdiary.BlogDetailActivity"
             android:label="@string/title_activity_blog_detail" >
         </activity>
         <activity

@@ -52,6 +52,13 @@
             android:minWidth="200dp"
             android:text="@string/password" />
 
+        <TextView
+            android:id="@+id/errorField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/red" />
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

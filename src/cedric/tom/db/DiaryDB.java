@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import cedric.tom.exception.DiaryException;
 import cedric.tom.model.Entry;
@@ -52,6 +53,7 @@ public class DiaryDB {
 			} catch (DiaryException e) { 
 				Log.v("DiaryDB", "User:" + e.getMessage());
 			}
+			cursor.moveToNext();
 		}
 		cursor.close();
 		return user;
@@ -79,14 +81,13 @@ public class DiaryDB {
 	public Entry getEntry(int id) {
 		Entry entry = null;
 
-		Cursor cursor = database.query("Entry",
-				entryColumns, null, null, null, null, null);
+		Cursor cursor = database.query("Entry", entryColumns, null, null, null, null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast() && entry == null) {
 			if (((int)cursor.getInt(0)) == id) {
 				try {
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
 					Date date = dateFormat.parse(cursor.getString(1));
 					
 					entry = new Entry((int) cursor.getInt(0), date, cursor.getString(2));
@@ -94,6 +95,7 @@ public class DiaryDB {
 					Log.v("DB", "Entry: Date corrupt?\t" + e.getMessage());
 				}
 			}
+			cursor.moveToNext();
 		}
 		cursor.close();
 		return entry;
@@ -102,20 +104,21 @@ public class DiaryDB {
 	public List<Entry> getAllEntries() {
 		List<Entry> entries = new ArrayList<Entry>();
 		
-		Cursor cursor = database.query("Entry",
-				entryColumns, null, null, null, null, null);
+		Cursor cursor = database.query("Entry", entryColumns, null, null, null, null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			try {
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				Date date = dateFormat.parse(cursor.getString(1));
-				
+				Log.v("DB", "Note:" + cursor.getString(1));
+				//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
+				//Date date = dateFormat.parse(cursor.getString(1));
+				Date date = new Date();
 				Entry entry = new Entry((int) cursor.getInt(0), date, cursor.getString(2));
 				entries.add(entry);
 			} catch (Exception e) {
 				Log.v("DB", "Entry: Date corrupt?\t" + e.getMessage());
 			}
+			cursor.moveToNext();
 		}
 		cursor.close();
 		
@@ -136,9 +139,12 @@ public class DiaryDB {
 	
 	private ContentValues getContentValuesEntry(Entry entry) {
 		ContentValues values = new ContentValues();
-		values.put("Date", entry.getDate().toString());
+
+		SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+		String entreeDate = simpleFormat.format(entry.getDate());
+		values.put("Date", entreeDate);
 		values.put("Content", entry.getContent());
-		
+		Log.v("DB", "Note:" + entreeDate);
 		//als er geen photoID is
 		if(entry.getPhotoID() != -1)
 			values.put("PhotoID", entry.getPhotoID());
@@ -165,6 +171,7 @@ public class DiaryDB {
 					Log.v("DB", "Note:" + e.getMessage());
 				}
 			}
+			cursor.moveToNext();
 		}
 		cursor.close();
 		return note;
@@ -183,6 +190,7 @@ public class DiaryDB {
 			} catch (DiaryException e) {
 				Log.v("DB", "Note:" + e.getMessage());
 			}
+			cursor.moveToNext();
 		}
 		cursor.close();
 		
@@ -224,6 +232,7 @@ public class DiaryDB {
 			if (((int)cursor.getInt(0)) == id) {
 				photo = new Photo((int) cursor.getInt(0), cursor.getString(1), cursor.getString(2));
 			}
+			cursor.moveToNext();
 		}
 		cursor.close();
 		return photo;
@@ -238,6 +247,7 @@ public class DiaryDB {
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			photos.add(new Photo((int) cursor.getInt(0), cursor.getString(1), cursor.getString(2)));
+			cursor.moveToNext();
 		}
 		cursor.close();
 		
